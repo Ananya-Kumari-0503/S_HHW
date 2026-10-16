@@ -1,5 +1,5 @@
-import React from 'react';
-import { TatvaValues, ScreenType } from '../types';
+import React, { useState } from 'react';
+import { TatvaValues, ScreenType, AiDiagnosisResult } from '../types';
 import {
   RotateCcw,
   Waves,
@@ -8,13 +8,18 @@ import {
   Shuffle,
   BookOpen,
   HelpCircle,
-  Info,
   Globe,
   Droplet,
   Wind,
   Orbit,
   AlertTriangle,
   CheckCircle2,
+  Sparkles,
+  Bot,
+  Loader2,
+  Cpu,
+  ShieldCheck,
+  ChevronRight,
 } from 'lucide-react';
 
 interface DashboardScreenProps {
@@ -32,7 +37,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
 }) => {
   const { earth, water, fire, air, space } = values;
 
-  // Harmony calculation exactly matching original Python logic
+  // Harmony calculation matching original Python logic
   let rawScore = 100;
   rawScore -= Math.abs(earth - 50) * 0.4;
   rawScore -= Math.abs(water - 50) * 0.4;
@@ -114,6 +119,41 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
     isHarmonious = false;
   }
 
+  // AI Diagnostic State
+  const [aiDiagnosis, setAiDiagnosis] = useState<AiDiagnosisResult | null>(null);
+  const [isDiagnosing, setIsDiagnosing] = useState(false);
+  const [diagnosisError, setDiagnosisError] = useState<string | null>(null);
+
+  const handleRunAiDiagnosis = async () => {
+    setIsDiagnosing(true);
+    setDiagnosisError(null);
+
+    try {
+      const res = await fetch('/api/ai/diagnose', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          earth,
+          water,
+          fire,
+          air,
+          space,
+          harmonyScore: score,
+          status,
+        }),
+      });
+
+      if (!res.ok) throw new Error('Diagnosis failed');
+      const data = await res.json();
+      setAiDiagnosis(data);
+    } catch (err: unknown) {
+      console.error(err);
+      setDiagnosisError('Failed to generate AI diagnosis. Please try again.');
+    } finally {
+      setIsDiagnosing(false);
+    }
+  };
+
   // Handlers for sliders
   const handleSliderChange = (key: keyof TatvaValues, val: number) => {
     onChangeValues({ ...values, [key]: val });
@@ -127,6 +167,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
       air: 50,
       space: 50,
     });
+    setAiDiagnosis(null);
   };
 
   const floodEvent = () => {
@@ -252,30 +293,105 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
                 <span className="text-slate-300 leading-relaxed">{solution.replace(/^Sol:\s*/, '')}</span>
               </div>
             </div>
+
+            {/* Run AI Diagnosis Action Button */}
+            <div className="w-full mt-4">
+              <button
+                onClick={handleRunAiDiagnosis}
+                disabled={isDiagnosing}
+                className="w-full py-3 px-4 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-500 hover:to-cyan-500 active:scale-[0.98] transition text-white font-bold text-xs sm:text-sm rounded-xl flex items-center justify-center gap-2 shadow-lg cursor-pointer disabled:opacity-50"
+              >
+                {isDiagnosing ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Analyzing Planetary Elements...</span>
+                  </>
+                ) : (
+                  <>
+                    <Bot className="w-4 h-4" />
+                    <span>Run AI Panch Tatva Diagnosis</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
 
+          {/* AI-Powered Diagnosis Result Modal / Card */}
+          {aiDiagnosis && (
+            <div className="bg-gradient-to-br from-[#141824] to-[#182030] rounded-2xl p-5 border border-teal-500/50 shadow-2xl space-y-3.5 animate-fadeIn">
+              <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                <div className="flex items-center gap-2 text-teal-400 font-bold text-sm">
+                  <Sparkles className="w-4 h-4" />
+                  <span>AI Planetary Assessment</span>
+                </div>
+                <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-teal-950 text-teal-300 border border-teal-800">
+                  AI Diagnostic Model
+                </span>
+              </div>
+
+              <div className="space-y-3 text-xs leading-relaxed">
+                <div>
+                  <div className="font-bold text-teal-300 mb-0.5">🩺 Diagnosis:</div>
+                  <p className="text-slate-200">{aiDiagnosis.diagnosis}</p>
+                </div>
+
+                <div className="pt-2 border-t border-slate-800">
+                  <div className="font-bold text-amber-300 mb-0.5">⚡ Compounding Feedback Loops:</div>
+                  <p className="text-slate-300">{aiDiagnosis.compoundingRisks}</p>
+                </div>
+
+                <div className="pt-2 border-t border-slate-800">
+                  <div className="font-bold text-cyan-300 mb-0.5">🛰️ AI Planetary Interventions:</div>
+                  <p className="text-slate-300">{aiDiagnosis.aiIntervention}</p>
+                </div>
+
+                <div className="pt-2 border-t border-slate-800">
+                  <div className="font-bold text-emerald-300 mb-0.5">🌱 Citizen Action Plan:</div>
+                  <p className="text-slate-300">{aiDiagnosis.citizenActions}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {diagnosisError && (
+            <div className="p-3 bg-rose-950/70 border border-rose-700 text-rose-300 rounded-xl text-xs">
+              {diagnosisError}
+            </div>
+          )}
+
           {/* Quick Hub Navigation Cards */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-3 gap-2.5">
             <button
               onClick={() => onNavigate('tatva')}
-              className="p-3.5 bg-[#161a24] hover:bg-[#1d2230] border border-slate-800 hover:border-teal-500/50 rounded-xl text-left transition-all group cursor-pointer shadow"
+              className="p-3 bg-[#161a24] hover:bg-[#1d2230] border border-slate-800 hover:border-teal-500/50 rounded-xl text-left transition-all group cursor-pointer shadow"
             >
-              <div className="flex items-center gap-2 text-teal-400 font-semibold text-xs mb-1">
-                <BookOpen className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                <span>Tatva Intelligence</span>
+              <div className="flex items-center gap-1.5 text-teal-400 font-semibold text-xs mb-1">
+                <BookOpen className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+                <span>Intelligence</span>
               </div>
-              <p className="text-[11px] text-slate-400 line-clamp-1">Explore elemental lore & metrics</p>
+              <p className="text-[10px] text-slate-400 truncate">5 Elements</p>
+            </button>
+
+            <button
+              onClick={() => onNavigate('ai-link')}
+              className="p-3 bg-[#161a24] hover:bg-[#1d2230] border border-slate-800 hover:border-cyan-500/50 rounded-xl text-left transition-all group cursor-pointer shadow"
+            >
+              <div className="flex items-center gap-1.5 text-cyan-400 font-semibold text-xs mb-1">
+                <Cpu className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+                <span>AI &amp; Tatvas</span>
+              </div>
+              <p className="text-[10px] text-slate-400 truncate">How AI is Linked</p>
             </button>
 
             <button
               onClick={() => onNavigate('quiz')}
-              className="p-3.5 bg-[#161a24] hover:bg-[#1d2230] border border-slate-800 hover:border-teal-500/50 rounded-xl text-left transition-all group cursor-pointer shadow"
+              className="p-3 bg-[#161a24] hover:bg-[#1d2230] border border-slate-800 hover:border-purple-500/50 rounded-xl text-left transition-all group cursor-pointer shadow"
             >
-              <div className="flex items-center gap-2 text-teal-400 font-semibold text-xs mb-1">
-                <HelpCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
+              <div className="flex items-center gap-1.5 text-purple-400 font-semibold text-xs mb-1">
+                <HelpCircle className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
                 <span>Quiz Zone</span>
               </div>
-              <p className="text-[11px] text-slate-400 line-clamp-1">Test your environmental knowledge</p>
+              <p className="text-[10px] text-slate-400 truncate">15 Questions</p>
             </button>
           </div>
         </div>
@@ -461,6 +577,28 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
               <Shuffle className="w-4 h-4" />
               Generate Random Challenge
             </button>
+          </div>
+
+          {/* Educational Callout to AI & Panch Tatvas */}
+          <div
+            onClick={() => onNavigate('ai-link')}
+            className="p-5 bg-gradient-to-r from-teal-950/40 via-cyan-950/30 to-purple-950/40 rounded-2xl border border-teal-500/40 hover:border-teal-400 transition-all cursor-pointer shadow-lg group flex items-center justify-between"
+          >
+            <div className="flex items-center gap-3.5">
+              <div className="p-3 rounded-xl bg-teal-500/20 border border-teal-500/40 text-teal-400 group-hover:scale-110 transition-transform">
+                <Bot className="w-6 h-6" />
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-white group-hover:text-teal-300 transition-colors flex items-center gap-2">
+                  <span>How AI is Linked to Panch Tatvas</span>
+                  <Sparkles className="w-3.5 h-3.5 text-teal-400" />
+                </h4>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Learn how satellite neural networks, ocean sensors, and green compute balance nature.
+                </p>
+              </div>
+            </div>
+            <ChevronRight className="w-5 h-5 text-teal-400 group-hover:translate-x-1 transition-transform shrink-0" />
           </div>
         </div>
       </div>

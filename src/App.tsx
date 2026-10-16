@@ -5,7 +5,8 @@ import { TatvaCenterScreen } from './components/TatvaCenterScreen';
 import { DetailScreen } from './components/DetailScreen';
 import { QuizScreen } from './components/QuizScreen';
 import { AboutScreen } from './components/AboutScreen';
-import { Sparkles, Sliders, BookOpen, HelpCircle, Info, Menu, X } from 'lucide-react';
+import { AiTatvaLinkScreen } from './components/AiTatvaLinkScreen';
+import { Sparkles, Sliders, BookOpen, HelpCircle, Info, Menu, X, Bot } from 'lucide-react';
 
 export const App: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>('dashboard');
@@ -36,6 +37,7 @@ export const App: React.FC = () => {
   const navItems = [
     { id: 'dashboard' as ScreenType, label: 'Simulator', icon: <Sliders className="w-4 h-4" /> },
     { id: 'tatva' as ScreenType, label: 'Panch Tatva Intelligence', icon: <BookOpen className="w-4 h-4" /> },
+    { id: 'ai-link' as ScreenType, label: 'How AI is Linked to Panch Tatvas', icon: <Bot className="w-4 h-4" /> },
     { id: 'quiz' as ScreenType, label: 'Quiz Zone', icon: <HelpCircle className="w-4 h-4" /> },
     { id: 'about' as ScreenType, label: 'About Project', icon: <Info className="w-4 h-4" /> },
   ];
@@ -158,6 +160,13 @@ export const App: React.FC = () => {
           />
         )}
 
+        {currentScreen === 'ai-link' && (
+          <AiTatvaLinkScreen
+            onNavigate={setCurrentScreen}
+            currentValues={tatvaValues}
+          />
+        )}
+
         {currentScreen === 'quiz' && (
           <QuizScreen onNavigate={setCurrentScreen} />
         )}
@@ -169,7 +178,7 @@ export const App: React.FC = () => {
 
       {/* Footer */}
       <footer className="border-t border-slate-800/80 bg-[#0d1017] py-4 text-center text-xs text-slate-500">
-        EcoSlider &bull; Panch Tatva Ecological Harmony & Intelligence Simulator
+        EcoSlider &bull; Panch Tatva Ecological Harmony &amp; AI Intelligence Simulator
       </footer>
     </div>
   );

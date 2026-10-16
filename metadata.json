@@ -1,4 +1,7 @@
 {
   "name": "EcoSlider",
-  "description": "Interactive Panch Tatva intelligence and ecological harmony simulator with environmental challenges and quiz."
+  "description": "Interactive Panch Tatva intelligence and ecological harmony simulator with AI-driven elemental diagnostics, planetary indicators, and environmental challenges.",
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

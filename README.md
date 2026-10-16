@@ -1,30 +1,27 @@
-# EcoSlider (Panch Tatva Intelligence)
+# EcoSlider (Panch Tatva Intelligence & Planetary AI)
 
-EcoSlider is an educational application rewritten in React, TypeScript, and Tailwind CSS. It allows users to explore the balance of the five classical elements (Tatvas) of nature: **Earth (Prithvi)**, **Water (Jal)**, **Fire (Agni)**, **Air (Vayu)**, and **Space (Akash)**.
+EcoSlider is an educational application built with **React, TypeScript, Tailwind CSS, and Node.js/Express**, integrating **Google Gemini 3.8 Flash** AI capabilities to explore the balance of the five primordial elements (Tatvas) of nature: **Earth (Prithvi)**, **Water (Jal)**, **Fire (Agni)**, **Air (Vayu)**, and **Space (Akash)**.
 
-## Features
+## How AI is Linked to the Panch Tatvas
 
-- **Dynamic Planetary Simulation Dashboard**:
-  - Interactive sliders for all 5 Tatvas (0–100 scale).
-  - Dynamic planetary visualization updating in real-time based on environmental stress conditions (Flood, Drought, Deforestation, Heatwave, Cold wave, Air pollution, Smog/UV).
-  - Harmony Score calculation (0–100) with diagnostic ratings (Excellent, Good, Moderate, Poor, Critical).
-  - Root cause and recommended solution cards for ecological imbalances.
-  - One-click environmental presets (**Flood**, **Drought**, **Heatwave**) and **Random Challenges**.
+1. **Earth (Prithvi) & AI**: Satellite Computer Vision & Synthetic Aperture Radar (SAR) classify soil organic carbon, monitor deforestation in real time, and program autonomous agricultural drones for precision reforestation.
+2. **Water (Jal) & AI**: Physics-informed neural networks predict flash floods up to 7 days ahead, map receding glacial mass, and steer autonomous marine robots to intercept microplastic gyres.
+3. **Fire (Agni) & AI**: Geostationary infrared satellite models detect wildfire ignitions before smoke plumes surface, and reinforcement learning AI balances renewable solar/wind grids.
+4. **Air (Vayu) & AI**: Atmospheric dispersion neural networks ingest ground sensors and weather telemetry to forecast hazardous PM2.5 and nitrogen dioxide plumes 48 hours in advance.
+5. **Space (Akash) & AI**: Astrodynamic AI coordinates automated orbital collision avoidance for 35,000+ space debris objects to safeguard Earth-observing satellites and monitor stratospheric ozone layer healing.
+6. **The Dual Relationship (Green AI)**: AI consumes Earth minerals for chips, Water for cooling, electricity (Fire), emits carbon (Air), and uses satellite links (Space)—making sustainable, energy-efficient AI essential for ecological preservation.
 
-- **Panch Tatva Intelligence Center**:
-  - Deep-dive guides for Earth, Water, Fire, Air, Space, and Overall Harmony.
-  - Multi-tab breakdown for each element:
-    - **Overview & Importance**: Terrestrial ecosystems, oxygen production, thermal cycle balance, etc.
-    - **Real-Time Indicators**: Atmospheric CO2 levels, deforestation rates, ocean temperature anomalies, and ozone metrics.
-    - **Everyday Action Steps**: Actionable, high-impact conservation practices for individuals.
+## How AI is Used in This App
 
-- **15-Question Tatva Quiz Zone**:
-  - Educational multi-choice quiz testing knowledge of planetary science and element philosophy.
-  - Instant answer validation with comprehensive explanations.
-  - Final rank evaluation: *Environmental Guardian*, *Environmental Explorer*, and *Keep Learning*.
-
-- **About Project**:
-  - Architectural overview and educational objectives.
+- **Real-Time Panch Tatva AI Diagnostic Engine**:
+  - Live button on the simulator dashboard: **"Run AI Panch Tatva Diagnosis"**.
+  - Evaluates non-linear cross-element coupling (e.g. drought + heatwave feedback loops).
+  - Delivers structured diagnostic reports: *Clinical Assessment*, *Compounding Systemic Risks*, *AI Satellite/Sensor Interventions*, and *Citizen Action Plans*.
+- **Interactive AI Elemental Oracle (`/api/ai/ask`)**:
+  - Users can ask custom questions about environmental science, elemental philosophy, or AI climate technology.
+  - Powered by Google Gemini 3.8 Flash with automatic built-in knowledge engine fallback.
+- **Dedicated "AI & Panch Tatvas" Architecture View**:
+  - Comprehensive educational breakdown of how AI observation systems map to ancient elemental wisdom.
 
 ## Development
 
@@ -32,7 +29,7 @@ EcoSlider is an educational application rewritten in React, TypeScript, and Tail
 # Install dependencies
 npm install
 
-# Start the dev server
+# Start the full-stack server
 npm run dev
 
 # Build for production

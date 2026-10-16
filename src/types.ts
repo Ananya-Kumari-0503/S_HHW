@@ -1,4 +1,4 @@
-export type ScreenType = 'dashboard' | 'tatva' | 'detail' | 'quiz' | 'about';
+export type ScreenType = 'dashboard' | 'tatva' | 'detail' | 'quiz' | 'about' | 'ai-link';
 
 export type TatvaKey = 'earth' | 'water' | 'fire' | 'air' | 'space' | 'harmony';
 
@@ -38,4 +38,12 @@ export interface TatvaValues {
   fire: number;
   air: number;
   space: number;
+}
+
+export interface AiDiagnosisResult {
+  diagnosis: string;
+  compoundingRisks: string;
+  aiIntervention: string;
+  citizenActions: string;
+  isAiGenerated: boolean;
 }
