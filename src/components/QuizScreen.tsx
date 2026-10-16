@@ -84,163 +84,176 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({ onNavigate }) => {
   const optionLetters: ('A' | 'B' | 'C' | 'D')[] = ['A', 'B', 'C', 'D'];
 
   const getOptionStyle = (letter: 'A' | 'B' | 'C' | 'D') => {
-    const defaultStyle = 'bg-teal-700 hover:bg-teal-600 text-white border-transparent';
+    const defaultStyle = 'bg-[#1b202d] hover:bg-[#252b3d] text-slate-200 border-slate-700/80 hover:border-teal-500/80';
     if (!isAnswered) return defaultStyle;
 
     if (letter === currentQ.correctAnswer) {
-      return 'bg-emerald-600 text-white border-emerald-400 ring-2 ring-emerald-400 font-bold';
+      return 'bg-emerald-700 text-white border-emerald-400 ring-2 ring-emerald-400 font-bold';
     }
     if (selectedOption === letter && !feedback?.isCorrect) {
-      return 'bg-rose-600 text-white border-rose-400 ring-2 ring-rose-400 font-bold';
+      return 'bg-rose-700 text-white border-rose-400 ring-2 ring-rose-400 font-bold';
     }
-    return 'bg-slate-800 text-slate-400 opacity-60';
+    return 'bg-slate-900/60 text-slate-500 border-slate-800 opacity-50';
   };
 
   return (
-    <div className="w-full max-w-md mx-auto min-h-screen bg-[#12151c] text-white flex flex-col pb-12 shadow-2xl">
+    <div className="w-full max-w-4xl mx-auto space-y-6">
       {/* Top Header */}
-      <div className="pt-4 pb-3 px-4 border-b border-slate-800 bg-[#161a24]/90 backdrop-blur sticky top-0 z-20 flex items-center justify-between">
-        <button
-          onClick={() => onNavigate('dashboard')}
-          className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition cursor-pointer flex items-center gap-1 text-xs"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Dashboard
-        </button>
-        <h1 className="text-base font-bold text-teal-400">Quiz Zone</h1>
-        <div className="w-12" />
-      </div>
-
-      <div className="p-4 space-y-4">
-        {/* Banner Quiz Graphic */}
-        <div className="w-full h-44 rounded-2xl overflow-hidden border border-slate-700/80 shadow-md bg-black/40 flex items-center justify-center p-2">
-          <img
-            src="/quiz.png"
-            alt="Tatva Quiz Zone"
-            className="w-full h-full object-contain"
-          />
+      <div className="flex items-center justify-between bg-[#141824] p-5 rounded-2xl border border-slate-800 shadow-md">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => onNavigate('dashboard')}
+            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition cursor-pointer"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Quiz Zone</h1>
+            <p className="text-xs sm:text-sm text-slate-400">Panch Tatva Environmental Challenge</p>
+          </div>
         </div>
 
-        {/* Main Quiz Card */}
-        <div className="bg-[#1e222e] rounded-2xl p-5 border border-slate-700/80 shadow-xl space-y-4">
-          {!hasStarted && (
-            <div className="text-center py-6 space-y-4">
-              <h3 className="text-xl font-bold text-slate-100">Test Your Tatva Wisdom</h3>
-              <p className="text-xs text-slate-400 max-w-xs mx-auto leading-relaxed">
+        <button
+          onClick={() => onNavigate('dashboard')}
+          className="px-4 py-2 bg-teal-600 hover:bg-teal-500 active:scale-95 text-white font-medium text-xs sm:text-sm rounded-xl transition cursor-pointer flex items-center gap-2 shadow"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to Simulator
+        </button>
+      </div>
+
+      {/* Main Quiz Card */}
+      <div className="bg-[#141824] rounded-2xl p-6 sm:p-8 border border-slate-800 shadow-xl space-y-6">
+        {!hasStarted && (
+          <div className="text-center py-8 space-y-6">
+            <div className="w-full max-w-xs mx-auto h-44 rounded-2xl overflow-hidden border border-slate-700/80 shadow-md bg-black/40 flex items-center justify-center p-2">
+              <img src="/quiz.png" alt="Quiz Banner" className="w-full h-full object-contain" />
+            </div>
+
+            <div className="space-y-2">
+              <h2 className="text-2xl sm:text-3xl font-bold text-white">Test Your Tatva Wisdom</h2>
+              <p className="text-sm text-slate-400 max-w-md mx-auto leading-relaxed">
                 15 interactive questions examining the ecological significance, philosophy, and balance of Earth, Water, Fire, Air, and Space.
               </p>
-              <button
-                onClick={startQuiz}
-                className="py-3 px-8 bg-teal-600 hover:bg-teal-500 active:scale-95 transition text-white font-semibold text-sm rounded-xl shadow-lg inline-flex items-center gap-2 cursor-pointer"
-              >
-                <Play className="w-4 h-4 fill-current" />
-                Start Quiz
-              </button>
             </div>
-          )}
 
-          {hasStarted && !isCompleted && (
-            <>
-              {/* Score and Question Counter */}
-              <div className="flex items-center justify-between text-xs font-semibold pb-2 border-b border-slate-800">
+            <button
+              onClick={startQuiz}
+              className="py-3.5 px-8 bg-teal-600 hover:bg-teal-500 active:scale-95 transition text-white font-bold text-sm sm:text-base rounded-xl shadow-lg inline-flex items-center gap-2 cursor-pointer"
+            >
+              <Play className="w-5 h-5 fill-current" />
+              Start Quiz
+            </button>
+          </div>
+        )}
+
+        {hasStarted && !isCompleted && (
+          <div className="space-y-6">
+            {/* Progress Header */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs sm:text-sm font-semibold">
                 <span className="text-teal-400">
                   Question {currentIndex + 1} of {totalQuestions}
                 </span>
-                <span className="text-teal-400">Score: {score}</span>
+                <span className="text-teal-400 font-mono">Current Score: {score}</span>
               </div>
-
-              {/* Question Text */}
-              <div className="py-2 min-h-[70px] flex items-center justify-center">
-                <p className="text-sm font-semibold text-center text-slate-100 leading-snug">
-                  {currentQ.question}
-                </p>
-              </div>
-
-              {/* Feedback Alert if Answered */}
-              {feedback && (
+              <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
                 <div
-                  className={`p-3 rounded-xl text-xs leading-relaxed flex items-start gap-2 border ${
-                    feedback.isCorrect
-                      ? 'bg-emerald-950/70 border-emerald-700/70 text-emerald-300'
-                      : 'bg-rose-950/70 border-rose-700/70 text-rose-300'
-                  }`}
-                >
-                  {feedback.isCorrect ? (
-                    <CheckCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                  ) : (
-                    <XCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                  )}
-                  <span>{feedback.text}</span>
-                </div>
-              )}
-
-              {/* Options */}
-              <div className="grid grid-cols-1 gap-2.5 pt-2">
-                {currentQ.options.map((opt, i) => {
-                  const letter = optionLetters[i];
-                  return (
-                    <button
-                      key={letter}
-                      disabled={isAnswered}
-                      onClick={() => handleAnswer(letter)}
-                      className={`w-full py-3 px-4 rounded-xl text-left text-xs transition-all border cursor-pointer active:scale-[0.99] flex items-center gap-2 shadow ${getOptionStyle(
-                        letter
-                      )}`}
-                    >
-                      <span className="font-bold">{opt}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </>
-          )}
-
-          {isCompleted && (
-            <div className="text-center py-6 space-y-4">
-              <Award className="w-16 h-16 text-teal-400 mx-auto" />
-              <div className="space-y-1">
-                <h3 className="text-2xl font-bold text-slate-100">Quiz Complete!</h3>
-                <div className="text-lg font-semibold text-teal-300">
-                  Final Score: {score} / {totalQuestions} ({Math.round(scorePct)}%)
-                </div>
-                <div className="inline-block mt-2 px-4 py-1.5 rounded-full bg-teal-950/80 border border-teal-700 text-teal-300 text-sm font-bold">
-                  Rank: {rank}
-                </div>
-              </div>
-
-              <div className="pt-4">
-                <button
-                  onClick={startQuiz}
-                  className="py-3 px-8 bg-teal-600 hover:bg-teal-500 active:scale-95 transition text-white font-semibold text-sm rounded-xl shadow-lg inline-flex items-center gap-2 cursor-pointer"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                  Play Again
-                </button>
+                  className="h-full bg-teal-500 transition-all duration-300 rounded-full"
+                  style={{ width: `${((currentIndex + 1) / totalQuestions) * 100}%` }}
+                />
               </div>
             </div>
-          )}
-        </div>
 
-        {/* Bottom Actions */}
-        <div className="flex gap-2">
-          {hasStarted && (
-            <button
-              onClick={startQuiz}
-              className="flex-1 py-3 px-4 bg-slate-800 hover:bg-slate-700 active:scale-[0.98] transition text-slate-200 font-medium text-xs rounded-xl flex items-center justify-center gap-1.5 cursor-pointer"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              Restart Quiz
-            </button>
-          )}
+            {/* Question Text */}
+            <div className="py-4 px-6 bg-slate-900/60 rounded-2xl border border-slate-800 min-h-[90px] flex items-center justify-center">
+              <p className="text-base sm:text-lg font-bold text-center text-slate-100 leading-snug">
+                {currentQ.question}
+              </p>
+            </div>
 
-          <button
-            onClick={() => onNavigate('dashboard')}
-            className="flex-1 py-3 px-4 bg-teal-700 hover:bg-teal-600 active:scale-[0.98] transition text-white font-medium text-xs rounded-xl flex items-center justify-center gap-1.5 cursor-pointer"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            Back to Dashboard
-          </button>
-        </div>
+            {/* Feedback Alert if Answered */}
+            {feedback && (
+              <div
+                className={`p-4 rounded-xl text-xs sm:text-sm leading-relaxed flex items-start gap-3 border transition-all ${
+                  feedback.isCorrect
+                    ? 'bg-emerald-950/80 border-emerald-700/80 text-emerald-300'
+                    : 'bg-rose-950/80 border-rose-700/80 text-rose-300'
+                }`}
+              >
+                {feedback.isCorrect ? (
+                  <CheckCircle className="w-5 h-5 shrink-0 mt-0.5" />
+                ) : (
+                  <XCircle className="w-5 h-5 shrink-0 mt-0.5" />
+                )}
+                <span>{feedback.text}</span>
+              </div>
+            )}
+
+            {/* 2x2 Grid for Options on Desktop */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+              {currentQ.options.map((opt, i) => {
+                const letter = optionLetters[i];
+                return (
+                  <button
+                    key={letter}
+                    disabled={isAnswered}
+                    onClick={() => handleAnswer(letter)}
+                    className={`w-full py-4 px-5 rounded-xl text-left text-xs sm:text-sm transition-all border cursor-pointer active:scale-[0.99] flex items-center gap-3 shadow-md ${getOptionStyle(
+                      letter
+                    )}`}
+                  >
+                    <span className="font-bold">{opt}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Footer Control */}
+            <div className="flex justify-between items-center pt-4 border-t border-slate-800">
+              <button
+                onClick={startQuiz}
+                className="py-2 px-3 text-xs text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 cursor-pointer"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                Restart
+              </button>
+              <span className="text-xs text-slate-500">Auto-advances after selection</span>
+            </div>
+          </div>
+        )}
+
+        {isCompleted && (
+          <div className="text-center py-8 space-y-6">
+            <Award className="w-20 h-20 text-teal-400 mx-auto" />
+            <div className="space-y-2">
+              <h2 className="text-3xl font-bold text-white">Quiz Complete!</h2>
+              <div className="text-xl font-semibold text-teal-300">
+                Final Score: {score} / {totalQuestions} ({Math.round(scorePct)}%)
+              </div>
+              <div className="inline-block mt-3 px-5 py-2 rounded-full bg-teal-950/80 border border-teal-700 text-teal-300 text-base font-bold shadow-lg">
+                Rank: {rank}
+              </div>
+            </div>
+
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <button
+                onClick={startQuiz}
+                className="py-3 px-6 bg-teal-600 hover:bg-teal-500 active:scale-95 transition text-white font-bold text-sm rounded-xl shadow-lg inline-flex items-center gap-2 cursor-pointer"
+              >
+                <RotateCcw className="w-4 h-4" />
+                Play Again
+              </button>
+              <button
+                onClick={() => onNavigate('dashboard')}
+                className="py-3 px-6 bg-slate-800 hover:bg-slate-700 active:scale-95 transition text-slate-200 font-semibold text-sm rounded-xl shadow-lg inline-flex items-center gap-2 cursor-pointer"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Back to Simulator
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
